@@ -1,0 +1,75 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Compte Veolia",
+        "description": "Identifiants de votre espace client eau.veolia.fr.",
+        "data": {
+          "email": "Email",
+          "password": "Mot de passe"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reconnexion à Veolia",
+        "description": "Veolia refuse le mot de passe de {email}. Saisissez le nouveau.",
+        "data": {
+          "password": "Mot de passe"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Email ou mot de passe refusé par Veolia.",
+      "cannot_connect": "Veolia ne répond pas, réessayez plus tard."
+    },
+    "abort": {
+      "already_configured": "Cet abonnement est déjà configuré.",
+      "reauth_successful": "Reconnexion réussie.",
+      "wrong_account": "Ce compte correspond à un autre abonnement."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "index": {
+        "name": "Index"
+      },
+      "last_day": {
+        "name": "Consommation dernier jour"
+      },
+      "month": {
+        "name": "Consommation du mois"
+      },
+      "year": {
+        "name": "Consommation de l'année"
+      },
+      "average_30d": {
+        "name": "Moyenne journalière 30 jours"
+      },
+      "last_reading": {
+        "name": "Dernier relevé"
+      },
+      "cost_last_day": {
+        "name": "Coût dernier jour"
+      },
+      "cost_month": {
+        "name": "Coût du mois"
+      },
+      "cost_year": {
+        "name": "Coût de l'année"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tarifs",
+        "description": "Prix TTC de votre facture. Laissez les champs eau potable vides pour utiliser le tarif publié par Veolia pour votre commune. L'assainissement n'est pas publié par Veolia : reprenez-le sur votre facture.",
+        "data": {
+          "prix_eau_potable": "Eau potable (€/m³)",
+          "abonnement_eau_potable": "Abonnement eau potable (€/an)",
+          "prix_assainissement": "Assainissement (€/m³)",
+          "abonnement_assainissement": "Abonnement assainissement (€/an)"
+        }
+      }
+    }
+  }
+}

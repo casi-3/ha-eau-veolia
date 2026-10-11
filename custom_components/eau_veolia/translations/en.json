@@ -1,0 +1,75 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Veolia account",
+        "description": "Credentials of your eau.veolia.fr customer area.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reconnect to Veolia",
+        "description": "Veolia rejected the password for {email}. Enter the new one.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Email or password rejected by Veolia.",
+      "cannot_connect": "Veolia is not responding, try again later."
+    },
+    "abort": {
+      "already_configured": "This subscription is already configured.",
+      "reauth_successful": "Reconnected successfully.",
+      "wrong_account": "This account belongs to another subscription."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "index": {
+        "name": "Meter index"
+      },
+      "last_day": {
+        "name": "Last day consumption"
+      },
+      "month": {
+        "name": "Month consumption"
+      },
+      "year": {
+        "name": "Year consumption"
+      },
+      "average_30d": {
+        "name": "30 day daily average"
+      },
+      "last_reading": {
+        "name": "Last reading"
+      },
+      "cost_last_day": {
+        "name": "Last day cost"
+      },
+      "cost_month": {
+        "name": "Month cost"
+      },
+      "cost_year": {
+        "name": "Year cost"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Prices",
+        "description": "Prices including VAT, from your bill. Leave the drinking water fields empty to use the price Veolia publishes for your town. Veolia does not publish sewage prices: copy them from your bill.",
+        "data": {
+          "prix_eau_potable": "Drinking water (€/m³)",
+          "abonnement_eau_potable": "Drinking water subscription (€/year)",
+          "prix_assainissement": "Sewage (€/m³)",
+          "abonnement_assainissement": "Sewage subscription (€/year)"
+        }
+      }
+    }
+  }
+}
