@@ -110,11 +110,20 @@ class VeoliaClient:
         self._token = token
         self._token_expiry = time.monotonic() + int(result.get("ExpiresIn", 3600)) - 120
 
-    async def _get(self, path: str, params: dict[str, Any] | None = None) -> Any:
+    async def _open_access(self) -> None:
+        await self._get("/espace-client", {"type-front": TYPE_FRONT}, opening=True)
+        if self.account:
+            await self._get(f"/abonnements/{self.account.id_abonnement}/facturation", opening=True)
+
+    async def _get(
+        self, path: str, params: dict[str, Any] | None = None, *, opening: bool = False
+    ) -> Any:
         last_error: Exception | None = None
         for attempt in range(ATTEMPTS):
             if not self._token or time.monotonic() >= self._token_expiry:
                 await self._login()
+                if not opening:
+                    await self._open_access()
             headers = {
                 "Authorization": f"Bearer {self._token}",
                 "Accept": "application/json",
@@ -130,7 +139,11 @@ class VeoliaClient:
                         return await resp.json(content_type=None)
                     if resp.status in (401, 403):
                         self._token = None
-                        last_error = VeoliaError(f"{path} : accès refusé (HTTP {resp.status})")
+                        detail = (await resp.text())[:200]
+                        kind = resp.headers.get("x-amzn-ErrorType", "")
+                        last_error = VeoliaError(
+                            f"{path} : accès refusé (HTTP {resp.status} {kind}) {detail}"
+                        )
                     elif resp.status == 429 or resp.status >= 500:
                         last_error = VeoliaError(f"{path} : HTTP {resp.status}")
                     else:
@@ -144,13 +157,13 @@ class VeoliaClient:
     async def async_get_account(self) -> Account:
         if self.account:
             return self.account
-        data = await self._get("/espace-client", {"type-front": TYPE_FRONT})
+        data = await self._get("/espace-client", {"type-front": TYPE_FRONT}, opening=True)
         try:
             abonnement = data["contacts"][0]["tiers"][0]["abonnements"][0]
             id_abonnement = str(abonnement["id_abonnement"])
         except (KeyError, IndexError, TypeError) as err:
             raise VeoliaError("Aucun abonnement trouvé sur ce compte") from err
-        facturation = await self._get(f"/abonnements/{id_abonnement}/facturation")
+        facturation = await self._get(f"/abonnements/{id_abonnement}/facturation", opening=True)
         try:
             account = Account(
                 id_abonnement=id_abonnement,
